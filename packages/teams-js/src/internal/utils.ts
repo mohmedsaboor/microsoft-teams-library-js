@@ -3,8 +3,9 @@
 import * as uuid from 'uuid';
 
 import { GlobalVars } from '../internal/globalVars';
-import { SdkError } from '../public/interfaces';
+import { ErrorCode, SdkError } from '../public/interfaces';
 import { pages } from '../public/pages';
+import { runtime, versionConstants } from '../public/runtime';
 import { validOrigins } from './constants';
 
 /**
@@ -266,6 +267,28 @@ export function callCallbackWithErrorOrResultOrNullFromPromiseAndReturnPromise<T
     }
   });
   return p;
+}
+
+export function generateNotSupportedError(
+  capability: string,
+  supportedVer?: string,
+  hostClientTypes?: string,
+): SdkError {
+  let msg = `${capability} is not supported in this host client. `;
+  // if runtime is legacy and capability is in versionConstants then return more details
+  if (runtime.isLegacyTeams) {
+    Object.values(versionConstants).forEach(capabilityReqsArr => {
+      capabilityReqsArr.forEach(capabilityReq => {
+        if (JSON.stringify(capabilityReq.capability).includes(capability)) {
+        }
+      });
+    });
+    msg += `This capability is supported in v${supportedVer} and above and in host client types ${hostClientTypes}.`;
+  }
+  return {
+    errorCode: ErrorCode.NOT_SUPPORTED_ON_PLATFORM,
+    message: msg,
+  };
 }
 
 /**
