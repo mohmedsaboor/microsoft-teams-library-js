@@ -33,12 +33,13 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   devServer: {
-    contentBase: path.join(__dirname, 'build'),
+    contentBase: path.join(__dirname, 'public'),
     publicPath: '/',
     compress: true,
     port: 4000,
     https: true,
     disableHostCheck: true,
+    historyApiFallback: true,
   },
   performance: { hints: false },
 };

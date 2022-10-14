@@ -131,6 +131,18 @@ const Authenticate = (): React.ReactElement =>
     },
   });
 
+const ExternalAuth = (): React.ReactElement => {
+  const idx = window.location.href.lastIndexOf('/');
+  const authParams = {
+    isExternal: true,
+    url: `${window.location.href.slice(
+      0,
+      idx,
+    )}/auth_start?hostRedirectUrl={hostRedirectUrl}&oauthRedirectMethod={oauthRedirectMethod}&authId={authId}`,
+  };
+  return <button onClick={() => authentication.authenticate(getAuthParams(authParams))}>External Auth</button>;
+};
+
 const getAuthParams = (authParam: authAuthenticateParams): authentication.AuthenticatePopUpParameters => {
   let authUrl = authParam.url;
 
@@ -153,6 +165,7 @@ const AuthenticationAPIs = (): ReactElement => (
     <NotifyFailure />
     <NotifySuccess />
     <Authenticate />
+    <ExternalAuth />
   </ModuleWrapper>
 );
 
