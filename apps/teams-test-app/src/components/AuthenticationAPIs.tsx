@@ -131,6 +131,26 @@ const Authenticate = (): React.ReactElement =>
     },
   });
 
+const AuthenticateExternal = (): React.ReactElement => {
+  const [token, setToken] = React.useState<string>();
+  const doOauth = async (): Promise<void> => {
+    const idx = window.location.href.lastIndexOf('/');
+    const authUrl = `${window.location.href.slice(
+      0,
+      idx,
+    )}/auth_start.html?authId={authId}&oauthRedirectMethod={oauthRedirectMethod}&hostRedirectUrl={hostRedirectUrl}&hostName={hostName}`;
+    const authParams = getAuthParams({ url: authUrl, isExternal: true, mockOAuth: true });
+    const result = await authentication.authenticate(authParams);
+    setToken(result);
+  };
+  return (
+    <div>
+      <button onClick={doOauth}>External Auth</button>
+      <div>{token}</div>
+    </div>
+  );
+};
+
 const getAuthParams = (authParam: authAuthenticateParams): authentication.AuthenticatePopUpParameters => {
   let authUrl = authParam.url;
 
@@ -153,6 +173,7 @@ const AuthenticationAPIs = (): ReactElement => (
     <NotifyFailure />
     <NotifySuccess />
     <Authenticate />
+    <AuthenticateExternal />
   </ModuleWrapper>
 );
 
