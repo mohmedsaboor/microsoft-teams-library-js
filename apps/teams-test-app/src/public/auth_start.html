@@ -11,7 +11,12 @@
       const authId = params.get('authId');
       const method = params.get('oauthRedirectMethod');
       const hostName = params.get('hostName');
+      const hostRedirectUrl = params.get('hostRedirectUrl');
       const state = `{"authId":"${authId}","method":"${method}", "hostName":"${hostName}"}`;
+
+      if (hostRedirectUrl) {
+        sessionStorage.setItem("OAUTH_REDIRECT_KEY", hostRedirectUrl);
+      }
 
       const getRedirectUri = () => {
         const idx = window.location.href.lastIndexOf('/');

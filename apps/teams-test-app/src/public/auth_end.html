@@ -10,9 +10,13 @@
       const result = params.get('code');
       const { authId, method, hostName } = JSON.parse(params.get('state'));
 
+      const hostRedirectUrl = sessionStorage.getItem("OAUTH_REDIRECT_KEY");
+
+      const redirectUrl = sessionStorage || `msorange://testapp.com/auth_callback?authId=${authId}&result=${result}`;
+
       // Redirect back to Orange host
       if (method === 'deeplink' && hostName === 'Orange') {
-        window.location.href = `msorange://testapp.com/auth_callback?authId=${authId}&result=${result}`;
+        window.location.href = redirectUrl;
       } else {
         document.getElementById('errorMessage').textContent = 'Unable to redirect back to the App';
       }
