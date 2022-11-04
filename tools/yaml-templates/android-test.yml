@@ -39,6 +39,10 @@ steps:
     displayName: 'Install Emulator'
     workingDirectory: '$(Agent.BuildDirectory)/androidHost/devtools/ci'
 
+  - bash: 'yarn add wait-on && yarn run wait-on https://localhost:4000/'
+    displayName: 'Wait for Test App server'
+    workingDirectory: '$(Agent.BuildDirectory)'
+
   - bash: 'chmod u+x ./gradlew && chmod u+x e2eTest.sh && ./e2eTest.sh'
     displayName: 'Run Android E2E Tests'
     workingDirectory: '$(Agent.BuildDirectory)/androidHost/apps/orangeandroid'
